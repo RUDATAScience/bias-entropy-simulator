@@ -1,57 +1,61 @@
-# Informational Health Validation: エントロピーの減衰とデータ前処理の病理
+# Informational Health Validation: Entropy Decay and the Pathology of Data Preprocessing
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-本リポジトリは、アンケートや大規模データ収集における「社会的望ましさバイアス（忖度）」が情報システムに与える不可逆的な破壊プロセスを検証するPythonシミュレーションです。
+This repository is a Python simulation that verifies the irreversible destructive process that "social desirability bias" (peer pressure and conformity) inflicts on information systems during surveys and large-scale data collection.
 
-現代の機械学習やデータサイエンスにおいて「標準的な前処理」とされている外れ値除去（データクレンジング）が、バイアス下においてはむしろ「情報の腐敗」を加速させるという致命的なパラドックスを証明します。
+It proves a fatal paradox: outlier removal (data cleansing), which is considered "standard preprocessing" in modern machine learning and data science, actually accelerates "informational corruption" under biased conditions.
 
-## 📌 背景と問題意識 (Background)
+---
 
-データ分析の現場では、極端なマイノリティの意見（評価1など）は「ノイズ」や「外れ値」として学習前に除去されるのが一般的です。しかし、回答者の意思決定に「同調圧力（忖度）」が作用している場合、この処理は致命的な結果を招きます。
+## 📌 Background
 
-本シミュレーションは以下の3つの事実を定量的に証明します。
+In the field of data analysis, extreme minority opinions (e.g., Rating 1) are generally removed as "noise" or "outliers" before model training. However, when "peer pressure (conformity)" influences respondents' decision-making, this procedure leads to fatal consequences.
 
-1. **シグナル消失の相図**: 回答者の確信度と忖度の干渉により、真実のシグナルが「相転移的」に蒸発する境界を特定します。
-2. **情報の熱的死**: 忖度の増大に伴い、システムの多様性（シャノン・エントロピー）が急激に減衰し、硬直化するプロセスを示します。
-3. **データ前処理の病理**: 実務家が良かれと思って行う「外れ値除去（2〜3シグマ基準など）」が、残された唯一の警告シグナルを組織的に抹殺し、データ全体をさらに「偽の合意点」へと吸い寄せる構造的欠陥を暴きます。
+This simulation quantitatively proves the following three facts:
 
-## 🧮 数理モデル (Mathematical Model)
+1. **Phase Diagram of Signal Disappearance**: Identifies the boundary where true signals evaporate in a "phase transition-like" manner due to the interference between respondents' confidence and conformity.
+2. **Informational Heat Death**: Demonstrates the process by which systemic diversity (Shannon entropy) rapidly decays and becomes rigid as conformity increases.
+3. **The Pathology of Data Preprocessing**: Exposes the structural flaw where "outlier removal (e.g., the 2–3 sigma rule)", executed with good intentions by practitioners, systematically obliterates the only remaining warning signals and pulls the entire dataset further toward a "false consensus."
 
-個人の最終的な効用（U_total）を、内発的な「本音（U_true）」と外発的な「忖度（U_target）」の線形結合として定義し、Softmax関数を通じて選択確率を算出します。
+---
 
-U_total = (1 - v2) * U_true + v2 * U_target
+## 🧮 Mathematical Model
 
-* v2: 社会的望ましさ（忖度）の重み。0で完全な本音、1で完全な同調。
-* Beta: 回答者の確信度。Softmax関数の鋭敏さを制御。
+An individual's final utility ($U_{\text{total}}$) is defined as a linear combination of their intrinsic "true intention" ($U_{\text{true}}$) and extrinsic "conformity" ($U_{\text{target}}$). The selection probability is then calculated via a Softmax function.
 
-## 📊 出力される分析結果 (Outputs)
+$$U_{\text{total}} = (1 - v_2) U_{\text{true}} + v_2 U_{\text{target}}$$
 
-スクリプトを実行すると `rigorous_validation_results` ディレクトリが作成され、以下の高解像度グラフ（PNG）と生データ（CSV）が生成されます。
+* **$v_2$**: The weight of social desirability (conformity). 0 represents complete honesty, while 1 represents complete conformity.
+* **$\beta$**: The respondent's confidence level, which controls the sensitivity of the Softmax function.
 
-* **Fig A: Phase Diagram of Signal Evaporation (Heatmap)**
-  * 確信度（Beta）と忖度（v2）の二次元パラメータ空間において、警告シグナルが消滅する「崖」の境界線を可視化した相図。
-* **Fig B: Information Entropy Decay**
-  * 忖度の増大に伴い、データの多様性を示す「シャノン・エントロピー」が急激に減衰し、システムが均質化（Homogenization）していく推移グラフ。
-* **Fig C: How 'Data Cleaning' Amplifies Bias**
-  * 生データ（Raw）と、統計的外れ値除去を行ったデータ（Filtered）の比較。データクレンジングを行うことで、平均値が真実からさらに遠ざかり、バイアスが増幅されるパラドックスの証明。
+---
 
-## 🚀 実行方法 (Usage)
+## 📊 Outputs
 
-本コードは **Google Colaboratory** での実行に最適化されています。
+Executing the script creates a `rigorous_validation_results` directory, generating the following high-resolution graphs (PNG) and raw data (CSV).
 
-1. `validation_sim.py`（または Jupyter Notebook形式）を Google Colab にアップロードします。
-2. 全てのセルを実行します。
-3. 計算完了後、グラフとCSVを格納した `rigorous_validation_archive.zip` が自動的にダウンロードされます。
+* **Fig A: Phase Diagram of Signal Evaporation (Heatmap)**: A phase diagram visualizing the "cliff" boundary where warning signals evaporate within the two-dimensional parameter space of confidence ($\beta$) and conformity ($v_2$).
+* **Fig B: Information Entropy Decay**: A transition graph showing how "Shannon entropy," representing data diversity, rapidly decays and homogenizes the system as conformity increases.
+* **Fig C: How 'Data Cleaning' Amplifies Bias**: A comparison between the raw data and the filtered data after statistical outlier removal. This proves the paradox where data cleansing pushes the mean further away from the truth, thereby amplifying the bias.
 
-### ローカル環境での実行に関する注意
-ローカルのPython環境（VSCode, JupyterLab等）で実行する場合は、Colab固有のモジュールを無効化してください。
-スクリプト先頭の `from google.colab import files` および、末尾の `files.download(...)` の行を削除（またはコメントアウト）することで、作業ディレクトリにZIPファイルが生成されます。
+---
+
+## 🚀 Usage
+
+This code is optimized for execution in **Google Colaboratory**.
+
+1. Upload `validation_sim.py` (or the Jupyter Notebook format) to Google Colab.
+2. Run all cells.
+3. Upon completion, a `rigorous_validation_archive.zip` containing the graphs and CSVs will be downloaded automatically.
+
+### Note on Local Environment Execution
+When running in a local Python environment (VSCode, JupyterLab, etc.), please disable Colab-specific modules. By deleting or commenting out the `from google.colab import files` line at the beginning and the `files.download(...)` line at the end of the script, the ZIP file will be generated in your current working directory.
 
 ```bash
-# 依存ライブラリのインストール
+# Install dependencies
 pip install -r requirements.txt
 
-# スクリプトの実行
+# Run the script
 python validation_sim.py
